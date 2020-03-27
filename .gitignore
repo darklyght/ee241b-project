@@ -1,5 +1,5 @@
 ### Project Specific stuff
-test_run_dir/*
+code/test_run_dir/*
 ### XilinxISE template
 # intermediate build files
 *.bgn
@@ -53,30 +53,30 @@ webtalk.log
 webtalk_pn.xml
 
 # generated folders
-iseconfig/
-xlnx_auto_0_xdb/
-xst/
-_ngo/
-_xmsgs/
+code/iseconfig/
+code/xlnx_auto_0_xdb/
+code/xst/
+code/_ngo/
+code/_xmsgs/
 ### Eclipse template
 *.pydevproject
 .metadata
 .gradle
-bin/
-tmp/
+code/bin/
+code/tmp/
 *.tmp
 *.bak
 *.swp
 *~.nib
 local.properties
-.settings/
+code/.settings/
 .loadpath
 
 # Eclipse Core
 .project
 
 # External tool builders
-.externalToolBuilders/
+code/.externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
 *.launch
@@ -130,15 +130,15 @@ local.properties
 *.hex
 
 # Debug files
-*.dSYM/
+code/*.dSYM/
 ### SBT template
 # Simple Build Tool
 # http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
 
-target/
-lib_managed/
-src_managed/
-project/boot/
+code/target/
+code/lib_managed/
+code/src_managed/
+code/project/boot/
 .history
 .cache
 ### Emacs template
@@ -160,20 +160,20 @@ tramp
 *_flymake.*
 
 # eshell files
-/eshell/history
-/eshell/lastdir
+/code/eshell/history
+/code/eshell/lastdir
 
 # elpa packages
-/elpa/
+/code/elpa/
 
 # reftex files
 *.rel
 
 # AUCTeX auto folder
-/auto/
+/code/auto/
 
 # cask packages
-.cask/
+code/.cask/
 ### Vim template
 [._]*.s[a-w][a-z]
 [._]s[a-w][a-z]
@@ -187,7 +187,7 @@ Session.vim
 *.iml
 
 ## Directory-based project format:
-.idea/
+code/.idea/
 # if you remove the above rule, at least ignore the following:
 
 # User-specific stuff:
@@ -216,10 +216,10 @@ Session.vim
 ## Plugin-specific files:
 
 # IntelliJ
-/out/
+/code/out/
 
 # mpeltonen/sbt-idea plugin
-.idea_modules/
+code/.idea_modules/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
@@ -288,7 +288,7 @@ Temporary Items
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## Build generated
-build/
+code/build/
 DerivedData
 
 ## Various settings
@@ -313,13 +313,13 @@ xcuserdata
 # sbt specific
 .cache
 .history
-.lib/
-dist/*
-target/
-lib_managed/
-src_managed/
-project/boot/
-project/plugins/project/
+code/.lib/
+code/dist/*
+code/target/
+code/lib_managed/
+code/src_managed/
+code/project/boot/
+code/project/plugins/project/
 
 # Scala-IDE specific
 .scala_dependencies
@@ -328,7 +328,7 @@ project/plugins/project/
 *.class
 
 # Mobile Tools for Java (J2ME)
-.mtj.tmp/
+code/.mtj.tmp/
 
 # Package Files #
 *.jar
