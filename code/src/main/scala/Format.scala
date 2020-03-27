@@ -4,23 +4,22 @@ import chisel3._
 import chisel3.util._
 
 object Format {
-    class FloatingPoint(val exponentWidth: Int, val mantissaWidth: Int) extends Bundle {
+    class Unpacked(val exponentWidth: Int, val fractionWidth: Int) extends Bundle {
+        val zero = Bool()
+        val nan = Bool()
         val sign = UInt(1.W)
-        val exponent = SInt((exponentWidth + 1).W)
-        val mantissa = UInt(mantissaWidth.W)
+        val exponent = SInt(exponentWidth.W)
+        val fraction = UInt(fractionWidth.W)
+    }
+
+    class FloatingPoint(val exponentWidthFP: Int, val fractionWidthFP: Int) extends Unpacked(exponentWidthFP + 1, fractionWidthFP + 1) {
     }
     
     object FloatingPoint {
-        def apply(exponentWidth: Int, mantissaWidth: Int): FloatingPoint = new FloatingPoint(exponentWidth, mantissaWidth)
+        def apply(exponentWidth: Int, fractionWidth: Int): FloatingPoint = new FloatingPoint(exponentWidth, fractionWidth)
     }
 
-    class PositUnpacked(val bitWidth: Int, val exponentWidth: Int) extends Bundle {
-        val regimeWidth = bitWidth - 2
-        val exponentMax = math.pow(2, exponentWidth).toInt * regimeWidth
-        val fractionWidth = if (bitWidth - 3 - exponentWidth <= 0) (1) else (bitWidth - 3 - exponentWidth + 5)
-        val sign = UInt(1.W)
-        val exponent = SInt((log2Ceil(exponentMax + 1) + 1).W)
-        val fraction = UInt(fractionWidth.W)
+    class PositUnpacked(val bitWidthP: Int, val exponentWidthP: Int) extends Unpacked(log2Ceil(math.pow(2, exponentWidthP).toInt * (bitWidthP - 2) + 1) + 1, if (bitWidthP - 3 - exponentWidthP <= 0) (1) else (bitWidthP - 3 - exponentWidthP + 1)) {
     }
 
     object PositUnpacked {
