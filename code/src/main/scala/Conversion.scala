@@ -25,21 +25,28 @@ object Conversion {
         exponent := exponentFraction(exponentFraction.getWidth - 1, exponentFraction.getWidth - exponentWidth)
         fraction := Cat(1.U, exponentFraction(exponentFraction.getWidth - exponentWidth - 1, 0))
 
+        io.out.zero := ~io.in(bitWidth - 1) & ~others.orR
+        io.out.nan := io.in(bitWidth - 1) & ~others.orR
         io.out.sign := io.in(bitWidth - 1)
         io.out.exponent := (regime << (math.pow(2, exponentWidth - 1).toInt).U).asSInt + exponent.zext
         io.out.fraction := fraction
     }
 
-    class toFloatingPoint(val exponentWidth: Int, val mantissaWidth: Int) extends Module {
+    class toFloatingPointUnpacked(val exponentWidth: Int, val fractionWidth: Int) extends Module {
         val io = IO(new Bundle {
-            val in = Input(UInt((1 + exponentWidth + mantissaWidth).W))
-            val out = Output(FloatingPoint(exponentWidth, mantissaWidth))
+            val in = Input(UInt((1 + exponentWidth + fractionWidth).W))
+            val out = Output(FloatingPoint(exponentWidth, fractionWidth))
         })
-        val bitWidth = 1 + exponentWidth + mantissaWidth
+        val bitWidth = 1 + exponentWidth + fractionWidth
         val bias = math.pow(2, exponentWidth - 1).toInt - 1
+        val subnormal = Wire(UInt(log2Ceil(fractionWidth + 1).W))
 
+        subnormal := Mux(~io.in(bitWidth - 2, bitWidth - exponentWidth - 1).orR, PriorityEncoder(Reverse(io.in(bitWidth - exponentWidth - 2, 0))), 0.U)
+
+        io.out.zero := ~io.in(bitWidth - 2, 0).orR
+        io.out.nan := io.in(bitWidth - 2, bitWidth - exponentWidth - 1).andR
         io.out.sign := io.in(bitWidth - 1)
-        io.out.exponent := io.in(bitWidth - 2, bitWidth - exponentWidth - 1).zext - bias.S
-        io.out.mantissa := io.in(bitWidth - exponentWidth - 2, 0)
+        io.out.exponent := io.in(bitWidth - 2, bitWidth - exponentWidth - 1).zext - bias.S - subnormal.zext
+        io.out.fraction := Mux(~io.in(bitWidth - 2, bitWidth - exponentWidth - 1).orR, Cat(io.in(bitWidth - exponentWidth - 2, 0) << subnormal, 0.U), Cat(1.U, io.in(bitWidth - exponentWidth - 2, 0)))
     }
 }
