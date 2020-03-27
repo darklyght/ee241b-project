@@ -5,7 +5,7 @@ import chisel3.util._
 import Format._
 
 object Conversion {
-	class toPositUnpacked(val bitWidth: Int, val exponentWidth: Int) extends Module {
+    class toPositUnpacked(val bitWidth: Int, val exponentWidth: Int) extends Module {
         val io = IO(new Bundle {
             val in = Input(UInt(bitWidth.W))
             val out = Output(PositUnpacked(bitWidth, exponentWidth))

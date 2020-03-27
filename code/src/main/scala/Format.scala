@@ -4,11 +4,11 @@ import chisel3._
 import chisel3.util._
 
 object Format {
-	class FloatingPoint(val exponentWidth: Int, val mantissaWidth: Int) extends Bundle {
-		val sign = UInt(1.W)
-		val exponent = SInt((exponentWidth + 1).W)
+    class FloatingPoint(val exponentWidth: Int, val mantissaWidth: Int) extends Bundle {
+        val sign = UInt(1.W)
+        val exponent = SInt((exponentWidth + 1).W)
         val mantissa = UInt(mantissaWidth.W)
-	}
+    }
     
     object FloatingPoint {
         def apply(exponentWidth: Int, mantissaWidth: Int): FloatingPoint = new FloatingPoint(exponentWidth, mantissaWidth)
