@@ -1,0 +1,39 @@
+[
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~PositPackedtoUnpacked|PositPackedtoUnpacked>io_out_sign",
+    "sources":[
+      "~PositPackedtoUnpacked|PositPackedtoUnpacked>io_in_sign"
+    ]
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~PositPackedtoUnpacked|PositPackedtoUnpacked>io_out_exponent",
+    "sources":[
+      "~PositPackedtoUnpacked|PositPackedtoUnpacked>io_in_sign",
+      "~PositPackedtoUnpacked|PositPackedtoUnpacked>io_in_others"
+    ]
+  },
+  {
+    "class":"logger.LogLevelAnnotation",
+    "globalLogLevel":{
+      
+    }
+  },
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.VerilogEmitter"
+  },
+  {
+    "class":"firrtl.options.TargetDirAnnotation",
+    "directory":"."
+  },
+  {
+    "class":"firrtl.options.OutputAnnotationFileAnnotation",
+    "file":"PositPackedtoUnpacked"
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"."
+  }
+]

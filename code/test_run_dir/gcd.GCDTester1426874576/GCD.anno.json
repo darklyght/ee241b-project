@@ -1,0 +1,16 @@
+[
+  {
+    "class":"firrtl.options.OutputAnnotationFileAnnotation",
+    "file":"GCD"
+  },
+  {
+    "class":"firrtl.options.TargetDirAnnotation",
+    "directory":"test_run_dir/gcd.GCDTester1426874576"
+  },
+  {
+    "class":"logger.LogLevelAnnotation",
+    "globalLogLevel":{
+      
+    }
+  }
+]

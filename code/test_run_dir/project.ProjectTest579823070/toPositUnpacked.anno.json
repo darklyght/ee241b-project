@@ -1,0 +1,27 @@
+[
+  {
+    "class":"firrtl.options.OutputAnnotationFileAnnotation",
+    "file":"toPositUnpacked"
+  },
+  {
+    "class":"chisel3.stage.phases.DriverCompatibility$RunFirrtlCompilerAnnotation$"
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"test_run_dir/project.ProjectTest579823070"
+  },
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.LowFirrtlEmitter"
+  },
+  {
+    "class":"firrtl.options.TargetDirAnnotation",
+    "directory":"test_run_dir/project.ProjectTest579823070"
+  },
+  {
+    "class":"logger.LogLevelAnnotation",
+    "globalLogLevel":{
+      
+    }
+  }
+]

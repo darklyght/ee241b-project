@@ -1,0 +1,39 @@
+[
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~toPositUnpacked|toPositUnpacked>io_out_sign",
+    "sources":[
+      "~toPositUnpacked|toPositUnpacked>io_in"
+    ]
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~toPositUnpacked|toPositUnpacked>io_out_exponent",
+    "sources":[
+      "~toPositUnpacked|toPositUnpacked>io_out_sign",
+      "~toPositUnpacked|toPositUnpacked>io_in"
+    ]
+  },
+  {
+    "class":"logger.LogLevelAnnotation",
+    "globalLogLevel":{
+      
+    }
+  },
+  {
+    "class":"firrtl.options.TargetDirAnnotation",
+    "directory":"test_run_dir/project.ProjectTest1677680336"
+  },
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.LowFirrtlEmitter"
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"test_run_dir/project.ProjectTest1677680336"
+  },
+  {
+    "class":"firrtl.options.OutputAnnotationFileAnnotation",
+    "file":"toPositUnpacked"
+  }
+]
