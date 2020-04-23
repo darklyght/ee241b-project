@@ -1,0 +1,68 @@
+# Technology Setup
+# Technology used is ASAP7
+vlsi.core.technology: asap7
+vlsi.core.node: 7
+technology.asap7.tarball_dir: "/home/ff/eecs151/"
+
+vlsi.core.max_threads: 4
+
+# General Hammer Inputs
+
+vlsi.inputs.supplies.VDD: "0.7 V"
+
+# Hammer will auto-generate a CPF for simple power designs; see hammer/src/hammer-vlsi/defaults.yml for more info
+vlsi.inputs.power_spec_mode: "auto"
+vlsi.inputs.power_spec_type: "cpf"
+
+# Specify the setup and hold corners for ASAP7
+vlsi.inputs.mmmc_corners: [
+  {name: "PVT_0P63V_100C", type: "setup", voltage: "0.63 V", temp: "100 C"},
+  {name: "PVT_0P77V_0C", type: "hold", voltage: "0.77 V", temp: "0 C"}
+]
+
+# SRAM Compiler compiler options
+vlsi.core.sram_generator_tool: "sram_compiler"
+# You should specify a location for the SRAM generator in the tech plugin
+vlsi.core.sram_generator_tool_path: ["/home/ff/eecs151/hammer/src/hammer-vlsi/technology/asap7"]
+vlsi.core.sram_generator_tool_path_meta: "append"
+# Specify this since we are not using macrocompiler
+vlsi.inputs.sram_parameters: "/home/ff/eecs151/hammer/src/hammer-vlsi/technology/asap7/sram-cache.json"
+vlsi.inputs.sram_parameters_meta: ["transclude", "json2list"]
+
+# Tool options. Replace with your tool plugin of choice.
+# Genus options
+vlsi.core.synthesis_tool: "genus"
+vlsi.core.synthesis_tool_path: ["/home/ff/eecs151/hammer-cadence-plugins/synthesis"]
+vlsi.core.synthesis_tool_path_meta: "append"
+synthesis.genus.version: "191"
+
+# Innovus options
+vlsi.core.par_tool: "innovus"
+vlsi.core.par_tool_path: ["/home/ff/eecs151/hammer-cadence-plugins/par"]
+vlsi.core.par_tool_path_meta: "append"
+par.innovus.version: "191"
+par.innovus.design_flow_effort: "standard"
+par.inputs.gds_merge: true
+
+# Calibre options
+vlsi.core.drc_tool: "calibre"
+vlsi.core.drc_tool_path: ["/home/ff/eecs151/hammer-mentor-plugins/drc"]
+vlsi.core.lvs_tool: "calibre"
+vlsi.core.lvs_tool_path: ["/home/ff/eecs151/hammer-mentor-plugins/lvs"]
+drc.calibre.calibre_drc_bin: "/share/instsww/mgc/CALIBRE/bin/calibre"
+drc.calibre.calibredrv_bin: "/share/instsww/mgc/CALIBRE/bin/calibredrv"
+drc.calibre.MGC_HOME: "/shared/instsww/mgc"
+lvs.calibre.calibre_lvs_bin: "/share/instsww/mgc/CALIBRE/bin/calibre"
+lvs.calibre.calibredrv_bin: "/share/instsww/mgc/CALIBRE/bin/calibredrv"
+lvs.calibre.v2lvs_bin: "/share/instsww/mgc/CALIBRE/bin/v2lvs"
+lvs.calibre.MGC_HOME: "/shared/instsww/mgc"
+
+# VCS options
+vlsi.core.sim_tool: "vcs"
+vlsi.core.sim_tool_path: ["/home/ff/eecs151/hammer-synopsys-plugins/sim"]
+vlsi.core.sim_tool_path_meta: "append"
+sim.vcs.version: "G-2012.09"
+
+# Generate Make include to aid in flow 
+vlsi.core.build_system: make
+

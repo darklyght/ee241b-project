@@ -1,0 +1,33 @@
+# Specify Global Variables
+simClockPeriod : &SIM_CLK_PERIOD "CLOCK_PERIOD=1.00"
+simOptions: &SIM_OPTIONS
+  - "-notice"
+  - "-PP"
+  - "-line"
+  - "+lint=all"
+  - "+v2k"
+  - "-debug"
+  - "+vcs+initreg+0"
+  - "+vcs+initmem+0"
+  - "+vcs+lic+wait"
+  - "+udpsched"
+  - "+neg_tchk"
+  - "+sdfverbose"
+  - "-negdelay"
+  - "+evalorder"
+  - "-sverilog"
+
+simVerilogSrc: &SIM_VERILOG_SRC
+  - "/scratch/ee290-2-abb/ee241b-project/code/sim/src/array_tb.v"
+  - "/scratch/ee290-2-abb/ee241b-project/code/sim/src/linearFloatingPointArray.v"
+
+sim.inputs.timing_annotated: true
+sim.inputs.input_files: *SIM_VERILOG_SRC
+sim.inputs.level: "gl"
+sim.inputs:
+  timescale: "1ns/100ps"
+  options: *SIM_OPTIONS
+  top_module: "array_tb"
+  tb_name: "array_tb"
+  defines: 
+    - *SIM_CLK_PERIOD

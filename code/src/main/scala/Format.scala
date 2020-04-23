@@ -11,18 +11,18 @@ object Format {
         val exponent = SInt(exponentWidth.W)
         val fraction = UInt(fractionWidth.W)
     }
-
-    class FloatingPoint(val exponentWidthFP: Int, val fractionWidthFP: Int) extends Unpacked(exponentWidthFP + 1, fractionWidthFP + 1) {
+    
+    object Unpacked {
+        def apply(exponentWidth: Int, fractionWidth: Int): Unpacked = new Unpacked(exponentWidth, fractionWidth)
     }
     
-    object FloatingPoint {
-        def apply(exponentWidth: Int, fractionWidth: Int): FloatingPoint = new FloatingPoint(exponentWidth, fractionWidth)
+    class Kulisch(val accumulatorWidth: Int) extends Bundle {
+        val zero = Bool()
+        val nan = Bool()
+        val number = SInt(accumulatorWidth.W)
     }
 
-    class PositUnpacked(val bitWidthP: Int, val exponentWidthP: Int) extends Unpacked(log2Ceil(math.pow(2, exponentWidthP).toInt * (bitWidthP - 2) + 1) + 1, if (bitWidthP - 3 - exponentWidthP <= 0) (1) else (bitWidthP - 3 - exponentWidthP + 1)) {
-    }
-
-    object PositUnpacked {
-        def apply(bitWidth: Int, exponentWidth: Int): PositUnpacked = new PositUnpacked(bitWidth, exponentWidth)
+    object Kulisch {
+        def apply(accumulatorWidth: Int): Kulisch = new Kulisch(accumulatorWidth)
     }
 }

@@ -8,9 +8,8 @@ object Conversion {
     class toPositUnpacked(val bitWidth: Int, val exponentWidth: Int) extends Module {
         val io = IO(new Bundle {
             val in = Input(UInt(bitWidth.W))
-            val out = Output(PositUnpacked(bitWidth, exponentWidth))
+            val out = Output(Unpacked(log2Ceil(math.pow(2, exponentWidth).toInt * (bitWidth - 2) + 1) + 1, if (bitWidth - 3 - exponentWidth <= 0) (1) else (bitWidth - 3 - exponentWidth + 1)))
         })
-
         val others = Wire(UInt((bitWidth - 1).W))
         val leading = Wire(UInt(log2Ceil(bitWidth + 1).W))
         val regime = Wire(SInt((leading.getWidth + 1).W))
@@ -25,17 +24,21 @@ object Conversion {
         exponent := exponentFraction(exponentFraction.getWidth - 1, exponentFraction.getWidth - exponentWidth)
         fraction := Cat(1.U, exponentFraction(exponentFraction.getWidth - exponentWidth - 1, 0))
 
-        io.out.zero := ~io.in(bitWidth - 1) & ~others.orR
-        io.out.nan := io.in(bitWidth - 1) & ~others.orR
+        io.out.zero := ~io.in(bitWidth - 1) & ~(io.in(bitWidth-2, 0)).orR
+        io.out.nan := io.in(bitWidth - 1) & ~(io.in(bitWidth-2, 0)).orR
         io.out.sign := io.in(bitWidth - 1)
         io.out.exponent := (regime << (math.pow(2, exponentWidth - 1).toInt).U).asSInt + exponent.zext
         io.out.fraction := fraction
     }
 
+	object toPositUnpacked {
+		def apply(bitWidth: Int, exponentWidth: Int): toPositUnpacked = new toPositUnpacked(bitWidth, exponentWidth)
+	}
+
     class toFloatingPointUnpacked(val exponentWidth: Int, val fractionWidth: Int) extends Module {
         val io = IO(new Bundle {
             val in = Input(UInt((1 + exponentWidth + fractionWidth).W))
-            val out = Output(FloatingPoint(exponentWidth, fractionWidth))
+            val out = Output(Unpacked(exponentWidth + 1, fractionWidth + 1))
         })
         val bitWidth = 1 + exponentWidth + fractionWidth
         val bias = math.pow(2, exponentWidth - 1).toInt - 1
@@ -49,4 +52,8 @@ object Conversion {
         io.out.exponent := io.in(bitWidth - 2, bitWidth - exponentWidth - 1).zext - bias.S - subnormal.zext
         io.out.fraction := Mux(~io.in(bitWidth - 2, bitWidth - exponentWidth - 1).orR, Cat(io.in(bitWidth - exponentWidth - 2, 0) << subnormal, 0.U), Cat(1.U, io.in(bitWidth - exponentWidth - 2, 0)))
     }
+
+	object toFloatingPointUnpacked {
+		def apply(exponentWidth: Int, fractionWidth: Int): toFloatingPointUnpacked = new toFloatingPointUnpacked(exponentWidth, fractionWidth)
+	}
 }
