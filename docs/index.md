@@ -11,3 +11,7 @@ layout: default
 ### Mid-term Report
 
 [Download](https://github.com/katliyang/ee241b-project/raw/master/reports/EE_241B_Midterm_Report.pdf) mid-term report
+
+### Final Report
+
+[Download](https://github.com/katliyang/ee241b-project/raw/master/reports/EE_241B_Final_Report.pdf) final report
