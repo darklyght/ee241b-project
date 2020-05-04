@@ -15,3 +15,7 @@ layout: default
 ### Final Report
 
 [Download](https://github.com/katliyang/ee241b-project/raw/master/reports/EE_241B_Final_Report.pdf) final report
+
+### Final Presentation Slides
+
+[Download](https://github.com/katliyang/ee241b-project/raw/master/reports/Posits%20Slides.pdf) final report
