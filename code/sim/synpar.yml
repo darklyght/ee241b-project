@@ -1,7 +1,7 @@
 # Specify Global Variables
-clockPeriod: &CLK_PERIOD "1ns"
+clockPeriod: &CLK_PERIOD "0.9ns"
 verilogSrc: &VERILOG_SRC
-  - "src/linearFloatingPointArray.v"
+  - "src/linearPositArray.v"
   # Add more source files here if you like
 
 # Specify clock signals
@@ -14,17 +14,17 @@ vlsi.inputs.clocks: [
 
 # Synthesis Constraints
 synthesis.inputs:
-  top_module: "linearFloatingPointArray"
+  top_module: "linearPositArray"
   input_files: *VERILOG_SRC
 
 # Placement Constraints
 vlsi.inputs.placement_constraints:
-  - path: "linearFloatingPointArray"
+  - path: "linearPositArray"
     type: toplevel
     x: 0
     y: 0
-    width:  100
-    height: 100
+    width:  5000
+    height: 5000
     margins:
       left:   0
       right:  0
@@ -62,7 +62,7 @@ vlsi.inputs.pin.assignments: [
   {pins: "*", layers: ["M5", "M7"], side: "bottom"}
 ]
 
-par.innovus.use_cco: true
+# par.innovus.use_cco: true
 
 # Power Straps
 par.power_straps_mode: generate

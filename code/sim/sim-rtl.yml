@@ -11,16 +11,18 @@ simOptions: &SIM_OPTIONS
   - "-sverilog"
 
 simVerilogSrc: &SIM_VERILOG_SRC
+  - "/scratch/ee290-2-abb/ee241b-project/code/sim/src/nn_tb.v"
   - "/scratch/ee290-2-abb/ee241b-project/code/sim/src/array_tb.v"
   - "/scratch/ee290-2-abb/ee241b-project/code/sim/src/linearFloatingPointArray.v"
   - "/scratch/ee290-2-abb/ee241b-project/code/sim/src/linearPositArray.v"
+  - "/scratch/ee290-2-abb/ee241b-project/code/sim/src/logPositArray.v"
   # Add more files here for testing if you like
 
 sim.inputs.input_files: *SIM_VERILOG_SRC
 sim.inputs:
   timescale: "1ns/100ps"
   options: *SIM_OPTIONS
-  top_module: "array_tb"
-  tb_name: "array_tb"
+  top_module: "nn_tb"
+  tb_name: "nn_tb"
   defines: 
     - *SIM_CLK_PERIOD

@@ -19,7 +19,7 @@ simOptions: &SIM_OPTIONS
 
 simVerilogSrc: &SIM_VERILOG_SRC
   - "/scratch/ee290-2-abb/ee241b-project/code/sim/src/array_tb.v"
-  - "/scratch/ee290-2-abb/ee241b-project/code/sim/src/linearFloatingPointArray.v"
+  - "/scratch/ee290-2-abb/ee241b-project/code/sim/build/syn-rundir/logPositArray.mapped.v"
 
 sim.inputs.timing_annotated: false
 sim.inputs.input_files: *SIM_VERILOG_SRC

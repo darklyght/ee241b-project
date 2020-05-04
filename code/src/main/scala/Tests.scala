@@ -69,10 +69,24 @@ class linearMultiplierTester(c: linearMultiplier) extends PeekPokeTester(c) {
     println(s"Input: ${peek(c.io.A.sign)} ${peek(c.io.A.exponent)} ${peek(c.io.A.fraction)} Output: ${peek(c.io.out.zero)} ${peek(c.io.out.nan)} ${peek(c.io.out.number)}")
 }
 
+class logMultiplierTester(c: logMultiplier) extends PeekPokeTester(c) {
+    poke(c.io.A.zero, 0)
+    poke(c.io.A.nan, 0)
+    poke(c.io.A.sign, 1)
+    poke(c.io.A.exponent, -2)
+    poke(c.io.A.fraction, 512)
+    poke(c.io.B.zero, 0)
+    poke(c.io.B.nan, 0)
+    poke(c.io.B.sign, 1)
+    poke(c.io.B.exponent, -2)
+    poke(c.io.B.fraction, 512)
+    println(s"Input: ${peek(c.io.A.sign)} ${peek(c.io.A.exponent)} ${peek(c.io.A.fraction)} Output: ${peek(c.io.out.zero)} ${peek(c.io.out.nan)} ${peek(c.io.out.number)}")
+}
+
 /*
 object ProjectTest extends App {
-  iotesters.Driver.execute(args, () => new linearMultiplier(6, 11, 81, 48)) {
-    c => new linearMultiplierTester(c)
+  iotesters.Driver.execute(args, () => new logMultiplier(6, 11, 81, 48, 11, 10)) {
+    c => new logMultiplierTester(c)
   }
 }
 */

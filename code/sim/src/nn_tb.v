@@ -1,14 +1,28 @@
-module array_tb ();
+module nn_tb ();
 	
-	localparam M = 128,
-			   N = 128,
-			   P = 128,
+	localparam M = 64,
+			   N = 64,
+			   P = 64,
 			   SIZE = 4,
 			   WIDTH = 16,
 			   ACC_WIDTH = 81;
 
 	reg clock;
 	reg reset;
+
+	reg [WIDTH-1:0] train_x [0:60000-1][0:784-1];
+	reg [WIDTH-1:0] train_y [0:60000-1][0:10-1];
+	reg [WIDTH-1:0] indices [0:500-1][0:1000-1];
+	reg [WIDTH-1:0] data [0:784-1][0:1000-1];
+	reg [WIDTH-1:0] truth [0:12-1][0:1000-1];
+	reg [WIDTH-1:0] hidden_weight [0:64-1][0:784-1];
+	reg [WIDTH-1:0] hidden_bias [0:64-1];
+	reg [WIDTH-1:0] hidden_val [0:64-1][0:1000-1];
+	reg [WIDTH-1:0] hidden_act [0:64-1][0:1000-1];
+	reg [WIDTH-1:0] output_weight [0:12-1][0:64-1];
+	reg [WIDTH-1:0] output_bias [0:12-1];
+	reg [WIDTH-1:0] output_val [0:12-1][0:1000-1];
+	reg [WIDTH-1:0] output_act [0:12-1][0:1000-1];
 
 	reg [WIDTH-1:0] io_A_in [0:SIZE-1];
 	reg [WIDTH-1:0] io_B_in [0:SIZE-1];
@@ -36,6 +50,24 @@ module array_tb ();
 	reg C_zero [0:M-1][0:P-1];
 	reg C_nan [0:M-1][0:P-1];
 	reg [ACC_WIDTH-1:0] C_gold [0:M-1][0:P-1];
+
+	task load_data;
+		input integer iteration;
+		begin
+			integer i, j;
+			for (i = 0; i < 784; i = i + 1) begin
+				for (j = 0; j < 1000; j = j + 1) begin
+					data[i][j] = train_x[indices[iteration][j]][i];
+				end
+				for (j = 0; j < 12; j = j + 1) begin
+					if (j < 10)
+						truth[i][j] = train_y[indices[iteration][j]][i];
+					else
+						truth[i][j] = 0;
+				end
+			end
+		end
+	endtask
 
 	task tile;
 		input [WIDTH-1:0] A [0:N-1][0:P-1];
@@ -99,7 +131,7 @@ module array_tb ();
 			reg C_zero_tiled [0:(M-1)/SIZE][0:(P-1)/SIZE][0:SIZE-1][0:SIZE-1];
 			reg C_nan_tiled [0:(M-1)/SIZE][0:(P-1)/SIZE][0:SIZE-1][0:SIZE-1];
 
-			/*$write("Multiplying matrix A:\n");
+			$write("Multiplying matrix A:\n");
 			for (i = 0; i < N; i = i + 1) begin
 				for (j = 0; j < P; j = j + 1) begin
 					$write("%h ", A[i][j]);
@@ -113,7 +145,7 @@ module array_tb ();
 					$write("%h ", B[i][j]);
 				end
 				$write("\n");
-			end*/
+			end
 
 			tile(A, B, C_init, C_zero_init, C_nan_init, A_tiled, B_tiled, C_tiled, C_zero_tiled, C_nan_tiled);
 
@@ -138,13 +170,13 @@ module array_tb ();
 				end
 			end
 
-			/*$write("Gives result C:\n");
+			$write("Gives result C:\n");
 			for (i = 0; i < M; i = i + 1) begin
 				for (j = 0; j < P; j = j + 1) begin
 					$write("%h ", C_zero[i][j] || C_nan[i][j] ? 0 : C[i][j]);
 				end
 				$write("\n");
-			end*/
+			end
 			
 		end
 	endtask
@@ -230,21 +262,23 @@ module array_tb ();
 	endfunction
 
 	initial begin
+		integer i, j;
 		$vcdpluson;
-		$vcdplusmemon;
-		$readmemh("../../src/A_init.hex", A);
-		$readmemh("../../src/B_init.hex", B);
-		$readmemh("../../src/C_init.hex", C);
-		$readmemh("../../src/C_zero_init.hex", C_zero);
-		$readmemh("../../src/C_nan_init.hex", C_nan);
-		//$readmemh("../../src/C_gold.hex", C_gold);
-		tiled_matmul(A, B, C, C_zero, C_nan, C, C_zero, C_nan);
-		//if (check_result(C, C_gold) == 1) begin
-		//	$display("Passed");
-		//end else begin
-		//	$display("Failed");
-		//end
-		$finish();
+		//$vcdplusmemon;
+		$readmemh("../../src/input_half.hex", train_x);
+		$readmemh("../../src/output_half.hex", train_y);
+		$readmemh("../../src/indices.hex", indices);
+		load_data(0);
+		for (i = 0; i < 28; i = i + 1) begin
+			for (j = 0; j < 28; j = j + 1) begin
+				$write("%h ", data[i * 28 + j][5]);
+			end
+			$write("\n");
+		end
+		for (i = 0; i < 10; i = i + 1) begin
+			$write("%h ", truth[i][5]);
+		end
+		$finish;
 	end
 /*
 	always @ (posedge clock) begin
@@ -255,7 +289,7 @@ module array_tb ();
 		$write("\n");
 	end
 */
-	logPositArray dut (
+	linearPositArray dut (
 		.clock(clock),
 		.reset(reset),
 		.io_A_in_0(io_A_in[0]),
@@ -296,9 +330,9 @@ module array_tb ();
 		.io_C_out_3_number(io_C_out[3])
 	);
 
-	/*initial begin
+	initial begin
 		#100000;
 		$finish();
-	end*/
+	end
 
 endmodule
